@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Creation Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+    }
+    form {
+      max-width: 500px;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input, select, button {
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      box-sizing: border-box;
+    }
+    input, select {
+      width: 100%;
+    }
+    .input-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .input-group input {
+      flex: 1 1 auto;   /* input grows to fill available space */
+    }
+    .input-group button {
+      flex: 0 0 150px;  /* fixed smaller button */
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <h2>User Creation Form</h2>
+  <form novalidate onsubmit="return validateForm(event)">
+    <!-- Gender -->
+    <label for="gender">Gender (required)</label>
+    <select id="gender" name="gender" required>
+      <option value="">-- Select --</option>
+      <option value="male">Mr.</option>
+      <option value="female">Ms.</option>
+      <option value="other">Other</option>
+      <option value="unspecified">Unspecified</option>
+    </select>
+
+    <!-- First Name -->
+    <label for="firstName">First name (required)</label>
+    <input type="text" id="firstName" name="firstName" required placeholder="Please enter first name">
+
+    <!-- Last Name -->
+    <label for="lastName">Last name (required)</label>
+    <input type="text" id="lastName" name="lastName" required placeholder="Please enter last name">
+
+    <!-- Date of Birth -->
+    <label for="dob">Date of birth (required)</label>
+    <input type="date" id="dob" name="dob" required>
+
+    <label for="saleschannel">Sales channel (required)</label>
+    <select id="saleschannel" name="gender" required>
+      <option value="">-- Select --</option>
+      <option value="dm">DocMorris</option>
+      <option value="mp">Medpex</option>
+      
+    </select>
+
+    <!-- Email Address -->
+    <label for="email">Email address (required)</label>
+    <div class="input-group">
+      <input type="email" id="email" name="email" required placeholder="Please enter a valid email">
+      <button type="button" onclick="generateEmail()">Generate</button>
+    </div>
+    <small id="emailError" style="color:red; display:none;">Please enter a valid email address.</small>
+
+    <!-- Submit -->
+    <button type="submit" style="margin-top: 1.5rem; width: 100%;">Create user</button>
+  </form>
+
+  <script>
+    function generateEmail() {
+      const randomString = Math.random().toString(36).substring(2, 8);
+      const email = `${crypto.randomUUID()}@docmorris.de`;
+      const emailInput = document.getElementById('email');
+      emailInput.value = email;
+      emailInput.setCustomValidity(""); // reset validity if previously invalid
+      document.getElementById('emailError').style.display = "none";
+    }
+
+    function validateForm(event) {
+      const emailInput = document.getElementById('email');
+      const emailError = document.getElementById('emailError');
+
+      if (!emailInput.checkValidity()) {
+        emailError.style.display = "block";
+        event.preventDefault();
+        return false;
+      } else {
+        emailError.style.display = "none";
+        return true;
+      }
+    }
+  </script>
+</body>
+</html>
